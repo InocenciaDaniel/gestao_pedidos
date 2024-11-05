@@ -30,7 +30,8 @@ Route::get('/create/pedido', [PedidoController::class, 'create'])
 ->middleware('verificar.perfil:Solicitante');
 
 Route::post('/store/pedido', [PedidoController::class, 'store'])
-->name('store.pedido');
+->name('store.pedido')
+->middleware('verificar.perfil:Solicitante');
 
 Route::post('/store/pedido', [PedidoController::class, 'store'])
 ->name('store.pedido');

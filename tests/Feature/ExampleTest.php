@@ -2,8 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\Grupo;
+use App\Models\Pedido;
+use App\Models\Solicitante;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -13,36 +17,22 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    use RefreshDatabase;
-
-    public function test_the_application_returns_a_successful_response()
+    /** @test */
+    public function aplicação_retorna_uma_resposta_sucesso_se_usuario_autenticado()
     {
-        // Cria um usuário com o campo perfil preenchido
         $user = User::factory()->create([
-            'perfil' => 'Solicitante' // ou o valor padrão que você precisa
+            'perfil' => 'Aprovador',
         ]);
-
-        // Autentica o usuário e tenta acessar a rota
-        $response = $this->actingAs($user)->get('home');
-
+        $response = $this->actingAs($user)->get('/home');
         $response->assertStatus(200);
     }
 
-    public function test_example()
+    /** @test */
+    public function aplicação_retorna_uma_resposta_falhada_se_usuario_nao_autenticado()
     {
-        $user = User::factory()->create([
-            'perfil' => 'Solicitante'
-        ]);
-
-        $response = $this->actingAs($user)->get('home');
-
-        $response->assertStatus(200);
+        $response = $this->get('/home');
+        $response->assertStatus(302);
     }
 
-    public function test_the_application_redirects()
-    {
-        $response = $this->get('home');
-
-        $response->assertStatus(302); // Verifica o redirecionamento
-    }
+    
 }

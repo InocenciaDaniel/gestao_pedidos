@@ -53,6 +53,8 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $request->validate([
             'materiais' => 'required|array',
             'materiais.*' => 'exists:materiais,id',
@@ -63,35 +65,38 @@ class PedidoController extends Controller
 
         DB::beginTransaction();
         try {
+            if (auth()->user()->perfil == 'Solicitante') {
 
-            $pedido = Pedido::create([
-                'total' => 0,
-                'status' => 'Novo',
-                'solicitante_id' => auth()->user()->id,
-                'grupo_id' => $request->grupo_id,
-            ]);
-
-            $total = 0;
-
-            foreach ($request->materiais as $index => $materialId) {
-                $quantidade = $request->quantidades[$index];
-
-                $material = Materiais::findOrFail($materialId);
-                $subTotal = $material->preco * $quantidade;
-
-                PedidoHasMateriais::create([
-                    'pedido_id' => $pedido->id,
-                    'material_id' => $materialId,
-                    'quantidade' => $quantidade,
-                    'sub_total' => $subTotal,
+                $pedido = Pedido::create([
+                    'total' => 0,
+                    'status' => 'Novo',
+                    'solicitante_id' => auth()->user()->id,
+                    'grupo_id' => $request->grupo_id,
                 ]);
 
-                $total += $subTotal;
-            }
-            $pedido->update(['total' => $total]);
+                $total = 0;
 
-            DB::commit();
-            return redirect()->route('show.pedido', ['id' => $pedido->id])->with('success', 'Pedido criado com sucesso!');
+                foreach ($request->materiais as $index => $materialId) {
+                    $quantidade = $request->quantidades[$index];
+
+                    $material = Materiais::findOrFail($materialId);
+                    $subTotal = $material->preco * $quantidade;
+
+                    PedidoHasMateriais::create([
+                        'pedido_id' => $pedido->id,
+                        'material_id' => $materialId,
+                        'quantidade' => $quantidade,
+                        'sub_total' => $subTotal,
+                    ]);
+
+                    $total += $subTotal;
+                }
+                $pedido->update(['total' => $total]);
+
+                DB::commit();
+                return redirect()->route('show.pedido', ['id' => $pedido->id])->with('success', 'Pedido criado com sucesso!');
+            }
+
         } catch (\Throwable $th) {
             DB::rollback();
             return redirect()->back()->with('error', 'Ocorreu um erro ao criar o pedido: ' . $th->getMessage());

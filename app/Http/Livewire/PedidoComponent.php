@@ -120,10 +120,12 @@ class PedidoComponent extends Component
     }
     public function aprovar()
     {
-        if ($this->pedido->grupo->saldo_permitido <= $this->pedido->total) {
-            $this->pedido->status = 'Aprovado';
-            $this->pedido->save();
-            session()->flash('success', 'Pedido aprovado com sucesso!');
+        if ($this->pedido->grupo->saldo_permitido >= $this->pedido->total) {
+            if ($this->pedido->grupo->aprovador_id === auth()->user()->id) {
+                $this->pedido->status = 'Aprovado';
+                $this->pedido->save();
+                session()->flash('success', 'Pedido aprovado com sucesso!');
+            }
         } else {
             $this->pedido->status = 'Rejeitado';
             $this->pedido->save();

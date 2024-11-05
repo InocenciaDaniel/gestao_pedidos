@@ -31,7 +31,7 @@
           <label for="email" class="block text-sm/6 font-medium text-gray-900">Email</label>
           <div class="mt-2">
             <input id="email" name="email" type="email" value="{{ old('email') }}" autocomplete="email" required
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6  @error('email') is-invalid @enderror">
+              class="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6  @error('email') is-invalid @enderror">
 
             @error('email')
         <span class="invalid-feedback" role="alert">
@@ -54,7 +54,7 @@
           </div>
           <div class="mt-2">
             <input id="password" name="password" required type="password" autocomplete="current-password" required
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 @error('password') is-invalid @enderror">
+              class="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 @error('password') is-invalid @enderror">
 
             @error('password')
         <span class="invalid-feedback" role="alert">

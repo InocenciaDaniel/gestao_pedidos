@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('total', 10, 2);
             $table->enum('status', ['Novo', 'Em Revisão', 'Alterações Solicitadas', 'Aprovado', 'Rejeitado']);
-            $table->foreignId(column: 'solicitante_id')->constrained('solicitantes')->onDelete('cascade');
+            $table->foreignId(column: 'solicitante_id')->constrained('users')->onDelete('cascade');
             $table->foreignId(column: 'grupo_id')->constrained('grupos')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
